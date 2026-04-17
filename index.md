@@ -25,4 +25,4 @@ A continuación se presenta el gráfico que correlaciona a los 9 hospitales con 
 2.  **Variabilidad y Outliers:** Se observan picos pronunciados que alcanzan el **50% de letalidad** en ciertos periodos. Técnicamente, esto sugiere muestras pequeñas (pocos egresos en ese mes) o una alta concentración de pacientes críticos durante contingencias sanitarias.
 3.  **Comparativa de Estabilidad:** A diferencia de otros indicadores, la letalidad en este "Top 9" no es uniforme; muestra una dispersión relativamente alta, lo que indica que la mortalidad hospitalaria está fuertemente ligada a eventos temporales específicos y no solo a la gestión estructural del centro.
 
-> **Nota técnica:** Para la construcción de este gráfico se filtraron los establecimientos con datos inconsistentes y se calcularon promedios móviles para suavizar las tendencias donde la dispersión era excesiva.
+> **Nota técnica:** Para la construcción de este gráfico se filtraron los establecimientos con datos inconsistentes y se calcularon promedios móviles para suavizar las tendencias donde la dispersión era excesiva. Además se espera implementación en HTML en el próximo avance...

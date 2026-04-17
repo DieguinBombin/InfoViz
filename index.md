@@ -5,7 +5,7 @@ title: Inicio
 
 # Análisis de Letalidad: Top 9 Hospitales vs. Cronología Temporal
 
-Este gráfico representa la evolución de la tasa de **letalidad** en los 10 centros hospitalarios con los índices más altos del dataset, permitiendo observar la consistencia de este indicador a lo largo del tiempo.
+Este gráfico representa la evolución de la tasa de **letalidad** en los 9 centros hospitalarios con los índices más altos del dataset, permitiendo observar la consistencia de este indicador a lo largo del tiempo.
 
 
 ### Visualización de Resultados

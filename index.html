@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Letalidad Hospitalaria</title>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #050505;
+      color: #f2f2f2;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 40px;
+      gap: 40px;
+    }
+
+    .ranking-container {
+      width: 480px;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.45;
+    }
+
+    .ranking-table {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ranking-row {
+      display: grid;
+      grid-template-columns: 48px 1fr 80px;
+      align-items: center;
+      padding: 16px 18px;
+      border: 1px solid #222;
+      border-radius: 14px;
+      background: #101010;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .ranking-row:hover {
+      background: #1b1b1b;
+      transform: translateX(8px);
+      border-color: #666;
+    }
+
+    .ranking-row.active {
+      background: #f2f2f2;
+      color: #050505;
+      border-color: #f2f2f2;
+    }
+
+    .rank {
+      font-size: 20px;
+      font-weight: 700;
+      color: #888;
+    }
+
+    .ranking-row.active .rank {
+      color: #050505;
+    }
+
+    .hospital-name {
+      font-size: 15px;
+      line-height: 1.25;
+      padding-right: 12px;
+    }
+
+    .letalidad-value {
+      font-size: 18px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .viz-panel {
+      width: 760px;
+      min-height: 560px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: all 0.35s ease;
+      border: 1px solid #222;
+      border-radius: 22px;
+      background: #0c0c0c;
+      padding: 28px;
+    }
+
+    .viz-panel.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .info-box {
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #222;
+    }
+
+    .info-rank {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .info-name {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .quick-reading {
+      color: #cfcfcf;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 12px 0;
+    }
+
+    .interpretation-note {
+      color: #8f8f8f;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0 0 16px 0;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .info-card {
+      background: #151515;
+      border: 1px solid #242424;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .info-label {
+      color: #999;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .info-number {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    svg {
+      width: 100%;
+      height: 360px;
+      overflow: visible;
+    }
+
+    .line {
+      fill: none;
+      stroke-width: 2.2px;
+      transition: opacity 0.25s ease, filter 0.25s ease, stroke-width 0.25s ease;
+    }
+
+    .line.blurred {
+      opacity: 0.13;
+      filter: blur(2px);
+      stroke-width: 1.5px;
+    }
+
+    .line.focused {
+      opacity: 1;
+      filter: none;
+      stroke-width: 4px;
+    }
+
+    .axis path,
+    .axis line {
+      stroke: #555;
+    }
+
+    .axis text {
+      fill: #aaa;
+      font-size: 12px;
+    }
+
+    .chart-label {
+      fill: #f2f2f2;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .dot {
+      transition: opacity 0.25s ease, r 0.25s ease;
+    }
+
+    .dot.blurred {
+      opacity: 0.15;
+    }
+
+    .dot.focused {
+      opacity: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .main-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .ranking-container,
+      .viz-panel {
+        width: 90vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="main-container">
+    <section class="ranking-container">
+      <div class="title">Ranking de letalidad hospitalaria</div>
+      <div class="subtitle">
+        Cada fila muestra un hospital ordenado por letalidad promedio. Al pasar el mouse, compara su evolución anual con los demás hospitales. Las líneas difuminadas sirven como contexto; la línea destacada muestra el hospital seleccionado.
+      </div>
+
+      <div id="ranking-table" class="ranking-table"></div>
+    </section>
+
+    <section id="viz-panel" class="viz-panel">
+      <div id="info-box" class="info-box"></div>
+      <svg id="chart"></svg>
+    </section>
+  </main>
+
+  <script>
+    const csvPath = "datos_letalidad_hospitales_completos.csv";
+
+    const formatPercent = d3.format(".2f");
+    const formatNumber = d3.format(",");
+
+    const rankingTable = d3.select("#ranking-table");
+    const vizPanel = d3.select("#viz-panel");
+    const infoBox = d3.select("#info-box");
+    const svg = d3.select("#chart");
+
+    const width = 700;
+    const height = 360;
+    const margin = { top: 28, right: 36, bottom: 42, left: 58 };
+
+    svg.attr("viewBox", `0 0 ${width} ${height}`);
+
+    let selectedHospital = null;
+
+    d3.csv(csvPath, d3.autoType).then(data => {
+      const hospitals = Array.from(
+        d3.group(data, d => d.establecimiento),
+        ([name, values]) => {
+          values.sort((a, b) => d3.ascending(a.periodo, b.periodo));
+
+          return {
+            name,
+            values,
+            promedioLetalidad: d3.mean(values, d => d.letalidad_promedio),
+            egresosTotales: d3.sum(values, d => d.egresos_totales),
+            promedioDiasEstada: d3.mean(values, d => d.promedio_dias_estada),
+            maxLetalidad: d3.max(values, d => d.letalidad_promedio),
+            minLetalidad: d3.min(values, d => d.letalidad_promedio)
+          };
+        }
+      )
+      .sort((a, b) => d3.descending(a.promedioLetalidad, b.promedioLetalidad))
+      .map((d, i) => ({
+        ...d,
+        rank: i + 1
+      }));
+
+      const years = Array.from(new Set(data.map(d => d.periodo))).sort(d3.ascending);
+
+      const x = d3.scalePoint()
+        .domain(years)
+        .range([margin.left, width - margin.right])
+        .padding(0.5);
+
+      const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.letalidad_promedio)]).nice()
+        .range([height - margin.bottom, margin.top]);
+
+      const color = d3.scaleOrdinal()
+        .domain(hospitals.map(d => d.name))
+        .range(d3.schemeTableau10);
+
+      const line = d3.line()
+        .x(d => x(d.periodo))
+        .y(d => y(d.letalidad_promedio))
+        .curve(d3.curveMonotoneX);
+
+      drawRanking(hospitals);
+      drawChart(hospitals, x, y, color, line);
+      updateFocus(hospitals[0].name, hospitals, false);
+
+      function drawRanking(hospitals) {
+        const rows = rankingTable
+          .selectAll(".ranking-row")
+          .data(hospitals)
+          .join("div")
+          .attr("class", "ranking-row")
+          .on("mouseenter", (event, d) => {
+            vizPanel.classed("visible", true);
+            updateFocus(d.name, hospitals, false);
+          })
+          .on("mouseleave", () => {
+            if (selectedHospital !== null) {
+              updateFocus(selectedHospital, hospitals, true);
+            }
+          })
+          .on("click", (event, d) => {
+            selectedHospital = d.name;
+            updateFocus(d.name, hospitals, true);
+          });
+
+        rows.append("div")
+          .attr("class", "rank")
+          .text(d => `#${d.rank}`);
+
+        rows.append("div")
+          .attr("class", "hospital-name")
+          .text(d => d.name);
+
+        rows.append("div")
+          .attr("class", "letalidad-value")
+          .text(d => `${formatPercent(d.promedioLetalidad)}%`);
+      }
+
+      function drawChart(hospitals, x, y, color, line) {
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", `translate(0, ${height - margin.bottom})`)
+          .call(d3.axisBottom(x));
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", `translate(${margin.left}, 0)`)
+          .call(d3.axisLeft(y).ticks(6).tickFormat(d => `${d}%`));
+
+        svg.append("text")
+          .attr("x", margin.left)
+          .attr("y", 16)
+          .attr("class", "chart-label")
+          .text("Letalidad promedio anual");
+
+        svg.selectAll(".line")
+          .data(hospitals)
+          .join("path")
+          .attr("class", "line")
+          .attr("d", d => line(d.values))
+          .attr("stroke", d => color(d.name));
+
+        svg.selectAll(".dot-group")
+          .data(hospitals)
+          .join("g")
+          .attr("class", "dot-group")
+          .selectAll(".dot")
+          .data(d => d.values.map(v => ({ ...v, hospital: d.name })))
+          .join("circle")
+          .attr("class", "dot")
+          .attr("cx", d => x(d.periodo))
+          .attr("cy", d => y(d.letalidad_promedio))
+          .attr("r", 3.5)
+          .attr("fill", d => color(d.hospital));
+      }
+
+      function updateFocus(hospitalName, hospitals, locked) {
+        const focused = hospitals.find(d => d.name === hospitalName);
+
+        rankingTable
+          .selectAll(".ranking-row")
+          .classed("active", d => d.name === hospitalName);
+
+        svg.selectAll(".line")
+          .classed("focused", d => d.name === hospitalName)
+          .classed("blurred", d => d.name !== hospitalName);
+
+        svg.selectAll(".dot")
+          .classed("focused", d => d.hospital === hospitalName)
+          .classed("blurred", d => d.hospital !== hospitalName)
+          .attr("r", d => d.hospital === hospitalName ? 5 : 2.8);
+
+        renderInfo(focused, locked);
+      }
+
+      function renderInfo(d, locked) {
+        const ultimoDato = d.values[d.values.length - 1];
+        const primerDato = d.values[0];
+
+        const variacion = ultimoDato.letalidad_promedio - primerDato.letalidad_promedio;
+        const signo = variacion >= 0 ? "+" : "";
+
+        let tendenciaTexto;
+        if (variacion > 1) {
+          tendenciaTexto = "aumentó durante el período observado";
+        } else if (variacion < -1) {
+          tendenciaTexto = "disminuyó durante el período observado";
+        } else {
+          tendenciaTexto = "se mantuvo relativamente estable";
+        }
+
+        const escapedName = escapeHTML(d.name);
+        const lecturaRapida = `
+          Este hospital ocupa la posición #${d.rank} del ranking. En promedio, registró aproximadamente ${formatPercent(d.promedioLetalidad)} fallecimientos por cada 100 egresos. Entre ${primerDato.periodo} y ${ultimoDato.periodo}, su letalidad ${tendenciaTexto} (${signo}${formatPercent(variacion)} puntos porcentuales).
+        `;
+
+        infoBox.html(`
+          <div class="info-rank">
+            ${locked ? "Hospital seleccionado" : "Vista previa"} · Posición #${d.rank}
+          </div>
+
+          <div class="info-name">
+            ${escapedName}
+          </div>
+
+          <p class="quick-reading">
+            ${escapeHTML(lecturaRapida.trim())}
+          </p>
+
+          <p class="interpretation-note">
+            La letalidad indica el porcentaje de egresos hospitalarios que terminaron en fallecimiento. Una mayor letalidad no necesariamente implica peor atención, ya que también puede depender de la complejidad de los pacientes, especialidades críticas o derivaciones de casos graves.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-label">Fallecimientos por cada 100 egresos</div>
+              <div class="info-number">${formatPercent(d.promedioLetalidad)}%</div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-label">Total de egresos registrados</div>
+              <div class="info-number">${formatNumber(d.egresosTotales)}</div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-label">Días promedio de hospitalización</div>
+              <div class="info-number">${formatPercent(d.promedioDiasEstada)}</div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-label">Menor letalidad anual</div>
+              <div class="info-number">${formatPercent(d.minLetalidad)}%</div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-label">Mayor letalidad anual</div>
+              <div class="info-number">${formatPercent(d.maxLetalidad)}%</div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-label">Cambio ${primerDato.periodo}-${ultimoDato.periodo}</div>
+              <div class="info-number">${signo}${formatPercent(variacion)} pts.</div>
+            </div>
+          </div>
+        `);
+      }
+
+      function escapeHTML(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+    });
+  </script>
+</body>
+</html>

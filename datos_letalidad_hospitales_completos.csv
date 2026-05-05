@@ -1,0 +1,61 @@
+establecimiento,periodo,letalidad_promedio,egresos_totales,promedio_dias_estada
+Complejo Asistencial Padre las Casas,2020,6.091176470588235,1009,9.911764705882353
+Complejo Asistencial Padre las Casas,2021,26.436944444444446,3204,40.14194444444444
+Complejo Asistencial Padre las Casas,2022,23.882333333333335,4908,21.714166666666664
+Complejo Asistencial Padre las Casas,2023,22.59333333333333,6014,25.807166666666667
+Complejo Asistencial Padre las Casas,2024,20.794500000000003,6389,21.815833333333334
+Complejo Asistencial Padre las Casas,2025,18.704166666666666,6687,26.344833333333334
+"Complejo Hospitalario San José (Santiago, Independencia)",2020,17.953229166666667,21955,21.02125
+"Complejo Hospitalario San José (Santiago, Independencia)",2021,14.660729166666668,21435,18.8728125
+"Complejo Hospitalario San José (Santiago, Independencia)",2022,18.254833333333334,22190,20.597083333333334
+"Complejo Hospitalario San José (Santiago, Independencia)",2023,15.647166666666667,21406,20.361083333333333
+"Complejo Hospitalario San José (Santiago, Independencia)",2024,14.667499999999999,20554,19.555333333333333
+"Complejo Hospitalario San José (Santiago, Independencia)",2025,13.07525,19096,21.308333333333334
+Hospital Dr. Eduardo Pereira Ramírez (Valparaíso),2020,19.895,3628,29.9425
+Hospital Dr. Eduardo Pereira Ramírez (Valparaíso),2021,18.77716666666667,3424,41.01033333333333
+Hospital Dr. Eduardo Pereira Ramírez (Valparaíso),2022,19.766527777777778,3566,32.86375
+Hospital Dr. Eduardo Pereira Ramírez (Valparaíso),2023,17.604027777777777,4224,29.752083333333335
+Hospital Dr. Eduardo Pereira Ramírez (Valparaíso),2024,18.308194444444446,4314,25.74722222222222
+Hospital Dr. Eduardo Pereira Ramírez (Valparaíso),2025,18.916857142857143,4643,17.683857142857143
+Hospital Dr. Leonardo Guzmán (Antofagasta),2020,15.777833333333335,16654,31.06544444444444
+Hospital Dr. Leonardo Guzmán (Antofagasta),2021,14.119333333333334,18405,34.11105555555555
+Hospital Dr. Leonardo Guzmán (Antofagasta),2022,12.176868686868687,17719,24.55020202020202
+Hospital Dr. Leonardo Guzmán (Antofagasta),2023,15.146629213483145,18730,29.847640449438202
+Hospital Dr. Leonardo Guzmán (Antofagasta),2024,17.04267857142857,20056,26.84470238095238
+Hospital Dr. Leonardo Guzmán (Antofagasta),2025,14.624404761904762,19864,24.989464285714284
+Hospital Metropolitano (Ex Militar),2020,46.138749999999995,846,22.1125
+Hospital Metropolitano (Ex Militar),2021,35.16916666666666,2252,25.786388888888887
+Hospital Metropolitano (Ex Militar),2022,23.862222222222222,2402,18.129166666666666
+Hospital Metropolitano (Ex Militar),2023,17.909210526315793,4108,12.008684210526315
+Hospital Metropolitano (Ex Militar),2024,19.631944444444443,6165,9.1875
+Hospital Metropolitano (Ex Militar),2025,28.83777777777778,7020,7.8291666666666675
+Hospital Padre Alberto Hurtado (San Ramón),2020,16.121742424242427,14097,18.605681818181818
+Hospital Padre Alberto Hurtado (San Ramón),2021,12.791136363636364,13505,15.83121212121212
+Hospital Padre Alberto Hurtado (San Ramón),2022,13.228181818181818,14677,15.987651515151514
+Hospital Padre Alberto Hurtado (San Ramón),2023,14.508120300751878,14652,14.934736842105263
+Hospital Padre Alberto Hurtado (San Ramón),2024,12.934848484848485,15529,13.395757575757576
+Hospital Padre Alberto Hurtado (San Ramón),2025,15.069318181818183,16029,12.22469696969697
+"Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel)",2020,13.335,1980,11.464166666666666
+"Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel)",2021,12.2875,2072,11.504166666666668
+"Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel)",2022,22.8225,1746,12.510833333333332
+"Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel)",2023,19.101666666666667,1486,13.797916666666666
+"Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel)",2024,11.78875,1855,11.599166666666667
+"Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel)",2025,8.582916666666668,1778,12.67
+Hospital de Maullín,2020,9.471666666666666,269,47.91583333333333
+Hospital de Maullín,2021,11.567916666666667,173,114.34250000000002
+Hospital de Maullín,2022,16.145,286,82.28291666666667
+Hospital de Maullín,2023,23.004583333333333,345,74.33583333333333
+Hospital de Maullín,2024,15.490416666666667,422,92.76208333333334
+Hospital de Maullín,2025,10.330833333333333,354,55.43375
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,2020,26.757291666666664,8789,26.199375
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,2021,20.035833333333333,10467,19.635625
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,2022,20.678541666666668,10682,18.302291666666665
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,2023,23.88416666666667,11198,18.47125
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,2024,20.595833333333335,11564,17.637708333333332
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,2025,20.669791666666665,12865,15.89875
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica,2020,22.316363636363636,2848,12.689545454545454
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica,2021,13.741875,3086,13.443333333333333
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica,2022,12.931041666666667,3219,11.078958333333333
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica,2023,13.274444444444445,3594,10.274999999999999
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica,2024,18.905,3951,11.343333333333334
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica,2025,16.71527777777778,4425,11.197222222222223
